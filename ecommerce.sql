@@ -167,3 +167,44 @@ CALL sp_gerenciar_produto(2, 101, 'Teclado Mecânico RGB', 249.90, 45, 1);
 
 -- Remoção
 CALL sp_gerenciar_produto(3, 101, NULL, NULL, NULL, NULL);
+
+
+-- PARTE 1 – TRANSAÇÕES
+SET autocommit = 0;
+
+START TRANSACTION;
+UPDATE produto SET estoque = estoque - 1 WHERE id = 1;
+UPDATE produto SET estoque = estoque - 1 WHERE id = 2;
+COMMIT;
+
+-- PARTE 2 – TRANSAÇÃO COM PROCEDURE
+DELIMITER $$
+
+CREATE PROCEDURE sp_movimenta_estoque (
+    IN p_id_produto1 INT,
+    IN p_id_produto2 INT
+)
+BEGIN
+    DECLARE CONTINUE HANDLER FOR SQLEXCEPTION
+    BEGIN
+        ROLLBACK;
+    END;
+
+    START TRANSACTION;
+
+    UPDATE produto SET estoque = estoque - 1 WHERE id = p_id_produto1;
+    UPDATE produto SET estoque = estoque - 1 WHERE id = p_id_produto2;
+
+    COMMIT;
+END$$
+
+DELIMITER ;
+
+CALL sp_movimenta_estoque(1, 2);
+
+-- PARTE 3 – BACKUP E RECOVERY
+-- Backup
+-- mysqldump -u root -p e_commerce > e_commerce_backup.sql
+
+-- Recovery
+-- mysql -u root -p e_commerce < e_commerce_backup.sql
