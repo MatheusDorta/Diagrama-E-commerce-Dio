@@ -129,3 +129,41 @@ CREATE INDEX idx_empregado_departamento ON empregado(departamento_id);
 
 CREATE INDEX idx_departamento_cidade ON departamento(cidade);
 
+DELIMITER $$
+
+CREATE PROCEDURE sp_gerenciar_produto (
+	IN acao INT,
+	IN pid INT,
+	IN pnome VARCHAR(100),
+	IN ppreco DECIMAL(10,2),
+	IN pestoque INT,
+	IN pfornecedor_id INT
+)
+BEGIN 
+	CASE
+		WHEN acao = 1 THEN
+			INSERT INTO Produto (id, nome, preco, estqoue, fornecedor_id)
+			VALUES (pid, pnome, ppreco, pestoque, pfornecedor_id);
+
+		WHEN acao = 2 THEN
+			UPDATE Produto
+			SET nome = pnome, preco = ppreco, estoque = pestoque, fornecedor_id = pfornecedor_id
+			WHERE id = pid;
+
+		WHEN acao = 3 THEN
+			DELETE FROM Produto WHERE id = pid;
+
+		ELSE
+			SELECT 'Ação Inválida, Use 1 para INSERT, 2 para UPDATE, 3 para DELETE.' AS mensagem;
+END$$
+
+DELIMITER ; 
+
+-- Inserção
+CALL sp_gerenciar_produto(1, 101, 'Teclado Gamer', 199.90, 50, 1);
+
+-- Atualização
+CALL sp_gerenciar_produto(2, 101, 'Teclado Mecânico RGB', 249.90, 45, 1);
+
+-- Remoção
+CALL sp_gerenciar_produto(3, 101, NULL, NULL, NULL, NULL);
