@@ -110,4 +110,22 @@ SELECT * FROM cliente;
 SELECT * FROM cliente WHERE nome = 'João';
 SELECT * FROM Fornecedor;
 
+SELECT departamento_id, COUNT(*) AS total_funcionarios
+FROM empregado
+GROUP BY departamento_id
+ORDER BY total_funcionarios DESC
+LIMIT 1;
+
+SELECT d.nome AS departamento, d.cidade
+FROM departamento d
+ORDER BY d.cidade;
+
+SELECT d.nome AS depatramento, e.nome AS empregado
+FROM departamento d
+JOIN empregado e ON e.departamento_id = d.id
+ORDER BY d.nome;
+
+CREATE INDEX idx_empregado_departamento ON empregado(departamento_id);
+
+CREATE INDEX idx_departamento_cidade ON departamento(cidade);
 
