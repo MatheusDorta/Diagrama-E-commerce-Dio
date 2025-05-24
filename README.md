@@ -27,6 +27,36 @@ O banco de dados é composto pelas seguintes tabelas:
 
 O script `create_tables.sql` contém todos os comandos `CREATE TABLE` para estruturar o banco.
 
+## 📊 Projeto: Índices Otimizados no Banco de Dados (Company)
+
+Neste projeto, aplicamos **técnicas de otimização com índices** em tabelas de um banco de dados relacional representando uma estrutura corporativa, com o objetivo de acelerar consultas frequentes e relevantes.
+
+---
+
+### ✅ Consultas resolvidas
+
+- Qual o departamento com maior número de pessoas?
+- Quais são os departamentos por cidade?
+- Relação de empregados por departamento
+
+---
+
+### 📌 Índices criados
+
+| Índice                         | Tabela       | Coluna           | Tipo    | Motivo                                                                 |
+|-------------------------------|--------------|------------------|---------|------------------------------------------------------------------------|
+| `idx_empregado_departamento`  | `empregado`  | `departamento_id`| B-TREE  | Acelera junções e contagens por departamento.                         |
+| `idx_departamento_cidade`     | `departamento`| `cidade`         | B-TREE  | Otimiza buscas e ordenações por cidade.                               |
+
+> **Critério de criação:** foram considerados apenas índices com impacto direto nas queries mais comuns e de maior custo.
+
+---
+
+### 🔧 Scripts disponíveis
+
+- `create_indexes.sql`: Criação dos índices otimizados.
+- `queries_otimizadas.sql`: Consultas com aproveitamento dos índices.
+
 ### 📌 Inserção de Dados (DML)
 
 O script `insert_data.sql` traz exemplos de inserções para teste do banco de dados.
